@@ -33,10 +33,10 @@ export default function ContactPage({ onClose }: Props) {
   return (
     <div className="h-full w-full bg-neutral-900 text-white overflow-y-auto">
       <div className="max-w-6xl mx-auto px-6 md:px-8 py-12 md:py-32">
-        <header className="flex justify-between items-start mb-16 md:mb-40">
-          <div className="max-w-3xl">
+        <header className="flex justify-between items-start gap-4 mb-16 md:mb-40">
+          <div className="min-w-0 max-w-3xl">
             <p className="text-[10px] uppercase tracking-[0.6em] text-neutral-500 font-bold mb-6">Contact / Dildiy</p>
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12">
               Start Your <br />
               <span className="text-neutral-400 italic">Journey.</span>
             </h1>
@@ -48,14 +48,15 @@ export default function ContactPage({ onClose }: Props) {
           </div>
           <button 
             onClick={onClose}
-            className="p-4 hover:bg-white/10 rounded-full transition-colors sticky top-0"
+            aria-label="Close"
+            className="shrink-0 p-4 hover:bg-white/10 rounded-full transition-colors sticky top-0"
           >
             <X className="w-8 h-8" />
           </button>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-16 md:gap-24 mb-24 md:mb-40">
-          <div className="space-y-12 md:space-y-16">
+        <div className="grid lg:grid-cols-2 gap-16 md:gap-24 mb-24 md:mb-40">
+          <div className="min-w-0 space-y-12 md:space-y-16">
             <div className="space-y-6 md:space-y-8">
               <h3 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-500">Contact Details</h3>
               <div className="space-y-4 md:space-y-6">
@@ -63,7 +64,7 @@ export default function ContactPage({ onClose }: Props) {
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all shrink-0">
                     <Mail className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
-                  <span className="text-lg md:text-2xl font-medium tracking-tight break-all">{CONTACT_EMAIL}</span>
+                  <span className="text-lg md:text-2xl font-medium tracking-tight [overflow-wrap:anywhere]">{CONTACT_EMAIL}</span>
                 </a>
                 <div className="flex items-center gap-4 md:gap-6 group">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center shrink-0">

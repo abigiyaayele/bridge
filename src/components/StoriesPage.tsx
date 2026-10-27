@@ -37,10 +37,10 @@ export default function StoriesPage({ onClose, onNavigate }: Props) {
   return (
     <div className="h-full w-full bg-black text-white overflow-y-auto">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-32">
-        <header className="flex justify-between items-start mb-16 md:mb-40">
-          <div className="max-w-3xl">
+        <header className="flex justify-between items-start gap-4 mb-16 md:mb-40">
+          <div className="min-w-0 max-w-3xl">
             <p className="text-[10px] uppercase tracking-[0.6em] text-neutral-500 font-bold mb-6">Success Stories / Dildiy</p>
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12">
               Real Stories of <br />
               <span className="text-neutral-600 italic">Connection.</span>
             </h1>
@@ -52,7 +52,8 @@ export default function StoriesPage({ onClose, onNavigate }: Props) {
           </div>
           <button 
             onClick={onClose}
-            className="p-4 hover:bg-white/10 rounded-full transition-colors sticky top-0"
+            aria-label="Close"
+            className="shrink-0 p-4 hover:bg-white/10 rounded-full transition-colors sticky top-0"
           >
             <X className="w-8 h-8" />
           </button>
