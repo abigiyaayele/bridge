@@ -3,33 +3,31 @@ import { X, Camera, Map, Globe, Compass, Clock, Video } from "lucide-react";
 
 interface Props {
   onClose: () => void;
+  onNavigate: (page: string) => void;
 }
 
 const experiences = [
   {
     title: "Cultural Immersion",
     description: "Experience the deep-rooted traditions of Ethiopia. From traditional coffee ceremonies to ancient celebrations, discover the soul of the horn of Africa.",
-    image: "/input_file_0.png",
+    image: "https://images.unsplash.com/photo-1518116550791-09609dd6774f?q=80&w=1200&auto=format&fit=crop",
     tag: "Tradition",
-    fallback: "https://images.unsplash.com/photo-1518116550791-09609dd6774f?q=80&w=1200&auto=format&fit=crop"
   },
   {
     title: "Market Exploration",
     description: "Navigate the vibrant markets of Addis Ababa and beyond. Discover handmade crafts, aromatic spices, and the colorful tapestry of daily life.",
-    image: "/input_file_1.png",
+    image: "https://images.unsplash.com/photo-1549444465-f66f91757391?q=80&w=1200&auto=format&fit=crop",
     tag: "Local Life",
-    fallback: "https://images.unsplash.com/photo-1549444465-f66f91757391?q=80&w=1200&auto=format&fit=crop"
   },
   {
     title: "Ancient Heritage",
     description: "Journey through history in Lalibela, Axum, and Gondar. Ethiopia's historical circuit offers a glimpse into a civilization that has flourished for millennia.",
-    image: "/input_file_2.png",
+    image: "https://images.unsplash.com/photo-1540564291723-8cf0739c362d?q=80&w=1200&auto=format&fit=crop",
     tag: "History",
-    fallback: "https://images.unsplash.com/photo-1540564291723-8cf0739c362d?q=80&w=1200&auto=format&fit=crop"
   }
 ];
 
-export default function ExploreEthiopiaPage({ onClose }: Props) {
+export default function ExploreEthiopiaPage({ onClose, onNavigate }: Props) {
   return (
     <div className="h-full w-full bg-[#faf9f6] text-[#1a1a1a] overflow-y-auto">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-32">
@@ -100,12 +98,6 @@ export default function ExploreEthiopiaPage({ onClose }: Props) {
                   alt={exp.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                   referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    if (img.src !== exp.fallback) {
-                      img.src = exp.fallback;
-                    }
-                  }}
                 />
                 <div className="absolute top-6 left-6">
                   <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold uppercase tracking-widest rounded-full text-black">
@@ -120,7 +112,10 @@ export default function ExploreEthiopiaPage({ onClose }: Props) {
                 <p className="text-base md:text-xl text-neutral-500 leading-relaxed font-light">
                   {exp.description}
                 </p>
-                <button className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-bold border-b border-black/20 pb-2 hover:border-black transition-all">
+                <button
+                  onClick={() => onNavigate("contact")}
+                  className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-bold border-b border-black/20 pb-2 hover:border-black transition-all"
+                >
                   Inquire Now <Compass className="w-4 h-4 ml-1" />
                 </button>
               </div>
@@ -162,7 +157,10 @@ export default function ExploreEthiopiaPage({ onClose }: Props) {
               Our agents are available to discuss your heritage tour requirements and provide 
               personalized advice on visiting your ancestral home.
             </p>
-            <button className="w-fit bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-neutral-800 transition-colors">
+            <button
+              onClick={() => onNavigate("contact")}
+              className="w-fit bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-neutral-800 transition-colors"
+            >
               Schedule a Meet
             </button>
           </div>

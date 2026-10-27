@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Mail, Phone, MapPin, ArrowRight, Instagram, Facebook, Twitter, Video, Calendar, Clock } from "lucide-react";
+import { CONTACT_EMAIL, openEmail } from "../contact";
 
 interface Props {
   onClose: () => void;
@@ -8,6 +9,26 @@ interface Props {
 
 export default function ContactPage({ onClose }: Props) {
   const [isMeetRequested, setIsMeetRequested] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", date: "", time: "", message: "" });
+  const [sent, setSent] = useState(false);
+
+  const update = (field: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm({ ...form, [field]: e.target.value });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const meeting = isMeetRequested
+      ? { "Google Meet requested": [form.date, form.time && `${form.time} EAT`].filter(Boolean).join(" at ") || "Yes, no time given" }
+      : {};
+    openEmail(`Message from ${form.name.trim()}`, {
+      "Name": form.name,
+      "Email": form.email,
+      ...meeting,
+      "Message": form.message,
+    });
+    setSent(true);
+  };
 
   return (
     <div className="h-full w-full bg-neutral-900 text-white overflow-y-auto">
@@ -38,11 +59,11 @@ export default function ContactPage({ onClose }: Props) {
             <div className="space-y-6 md:space-y-8">
               <h3 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-500">Contact Details</h3>
               <div className="space-y-4 md:space-y-6">
-                <a href="mailto:info@thebridgeethiopia.com" className="flex items-center gap-4 md:gap-6 group">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-4 md:gap-6 group">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all shrink-0">
                     <Mail className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
-                  <span className="text-lg md:text-2xl font-medium tracking-tight break-all">info@thebridgeethiopia.com</span>
+                  <span className="text-lg md:text-2xl font-medium tracking-tight break-all">{CONTACT_EMAIL}</span>
                 </a>
                 <div className="flex items-center gap-4 md:gap-6 group">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center shrink-0">
@@ -90,14 +111,14 @@ export default function ContactPage({ onClose }: Props) {
 
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-12 rounded-3xl h-fit">
             <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-6 md:mb-8">Send a Message</h3>
-            <form className="space-y-6 md:space-y-8" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-500">Your Name</label>
-                <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 md:py-4 focus:border-white outline-none transition-colors text-base md:text-lg" placeholder="Enter your name" />
+                <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 md:py-4 focus:border-white outline-none transition-colors text-base md:text-lg" placeholder="Enter your name" required value={form.name} onChange={update("name")} />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-500">Email Address</label>
-                <input type="email" className="w-full bg-transparent border-b border-white/10 py-3 md:py-4 focus:border-white outline-none transition-colors text-base md:text-lg" placeholder="email@example.com" />
+                <input type="email" className="w-full bg-transparent border-b border-white/10 py-3 md:py-4 focus:border-white outline-none transition-colors text-base md:text-lg" placeholder="email@example.com" required value={form.email} onChange={update("email")} />
               </div>
 
               {/* Google Meet Option */}
@@ -135,6 +156,8 @@ export default function ContactPage({ onClose }: Props) {
                           <div className="relative group/input">
                             <input 
                               type="date" 
+                              value={form.date}
+                              onChange={update("date")}
                               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 md:py-4 focus:border-white focus:ring-1 focus:ring-white outline-none transition-all text-sm md:text-base [color-scheme:dark]" 
                             />
                           </div>
@@ -146,6 +169,8 @@ export default function ContactPage({ onClose }: Props) {
                           <div className="relative group/input">
                             <input 
                               type="time" 
+                              value={form.time}
+                              onChange={update("time")}
                               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 md:py-4 focus:border-white focus:ring-1 focus:ring-white outline-none transition-all text-sm md:text-base [color-scheme:dark]" 
                             />
                           </div>
@@ -161,9 +186,14 @@ export default function ContactPage({ onClose }: Props) {
 
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-500">How can we help?</label>
-                <textarea rows={4} className="w-full bg-transparent border border-white/10 p-4 md:p-6 rounded-2xl focus:border-white outline-none transition-colors text-base md:text-lg resize-none" placeholder="Tell us about your journey..." />
+                <textarea rows={4} className="w-full bg-transparent border border-white/10 p-4 md:p-6 rounded-2xl focus:border-white outline-none transition-colors text-base md:text-lg resize-none" placeholder="Tell us about your journey..." required value={form.message} onChange={update("message")} />
               </div>
-              <button className="w-full bg-white text-black py-4 md:py-6 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center justify-center gap-3 hover:bg-neutral-200 transition-colors">
+              {sent && (
+                <p role="status" className="text-sm text-emerald-400">
+                  Your email app should now be open with your message filled in. Press send to reach us.
+                </p>
+              )}
+              <button type="submit" className="w-full bg-white text-black py-4 md:py-6 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center justify-center gap-3 hover:bg-neutral-200 transition-colors">
                 Send Message <ArrowRight className="w-4 h-4" />
               </button>
             </form>

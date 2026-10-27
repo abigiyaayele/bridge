@@ -3,6 +3,7 @@ import { X, Quote, ArrowRight } from "lucide-react";
 
 interface Props {
   onClose: () => void;
+  onNavigate: (page: string) => void;
 }
 
 const stories = [
@@ -32,7 +33,7 @@ const stories = [
   }
 ];
 
-export default function StoriesPage({ onClose }: Props) {
+export default function StoriesPage({ onClose, onNavigate }: Props) {
   return (
     <div className="h-full w-full bg-black text-white overflow-y-auto">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-32">
@@ -85,8 +86,11 @@ export default function StoriesPage({ onClose }: Props) {
                 <p className="text-base md:text-lg text-neutral-400 leading-relaxed font-light">
                   {story.description}
                 </p>
-                <button className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-bold border-b border-white/20 pb-2 hover:border-white transition-all">
-                  Read Full Story <ArrowRight className="w-4 h-4" />
+                <button
+                  onClick={() => onNavigate("find-family")}
+                  className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] font-bold border-b border-white/20 pb-2 hover:border-white transition-all"
+                >
+                  Start Your Own Story <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>

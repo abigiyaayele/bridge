@@ -7,11 +7,12 @@ import StoriesPage from "./components/StoriesPage";
 import ContactPage from "./components/ContactPage";
 import FindFamilyForm from "./components/FindFamilyForm";
 import ExploreEthiopiaPage from "./components/ExploreEthiopiaPage";
+import { CONTACT_EMAIL } from "./contact";
 
 const carouselImages = [
-  "/input_file_0.png",
-  "/input_file_1.png",
-  "/input_file_2.png",
+  "https://images.unsplash.com/photo-1518116550791-09609dd6774f?q=80&w=1920&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1549444465-f66f91757391?q=80&w=1920&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1540564291723-8cf0739c362d?q=80&w=1920&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1920&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=1920&auto=format&fit=crop",
 ];
@@ -92,13 +93,17 @@ export default function App() {
       case "services":
         return <ServicesPage onClose={() => setCurrentPage(null)} onNavigate={(page) => setCurrentPage(page)} />;
       case "stories":
-        return <StoriesPage onClose={() => setCurrentPage(null)} />;
+        return <StoriesPage onClose={() => setCurrentPage(null)} onNavigate={(page) => setCurrentPage(page)} />;
+      // "Support a Family" and "Visit & Connect" have no page of their own yet,
+      // so they go to the contact form.
+      case "support":
+      case "visit":
       case "contact":
         return <ContactPage onClose={() => setCurrentPage(null)} />;
       case "find-family":
         return <FindFamilyForm onClose={() => setCurrentPage(null)} />;
       case "explore":
-        return <ExploreEthiopiaPage onClose={() => setCurrentPage(null)} />;
+        return <ExploreEthiopiaPage onClose={() => setCurrentPage(null)} onNavigate={(page) => setCurrentPage(page)} />;
       default:
         return null;
     }
@@ -159,7 +164,7 @@ export default function App() {
             </div>
             <div className="text-right">
               <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">Contact</p>
-              <p className="text-[11px] font-bold uppercase tracking-wider">info@thebridgeethiopia.com</p>
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-[11px] font-bold uppercase tracking-wider hover:underline">{CONTACT_EMAIL}</a>
             </div>
           </div>
         </header>

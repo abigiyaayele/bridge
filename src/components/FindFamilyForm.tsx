@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { X, ArrowRight, Check } from "lucide-react";
+import { CONTACT_EMAIL, openEmail } from "../contact";
 
 interface Props {
   onClose: () => void;
@@ -18,10 +19,39 @@ export default function FindFamilyForm({ onClose }: Props) {
     message: "",
   });
 
+  const [error, setError] = useState("");
+
+  const handleNext = () => {
+    if (!formData.fullName.trim()) {
+      setError("Please enter your name before continuing.");
+      return;
+    }
+    setError("");
+    setStep(2);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!/^\S+@\S+\.\S+$/.test(formData.contactEmail.trim())) {
+      setError("Please enter a valid email so we can reach you.");
+      return;
+    }
+    setError("");
+    openEmail(`Find My Family request: ${formData.fullName.trim()}`, {
+      "Full name (at birth if known)": formData.fullName,
+      "Date of birth": formData.birthDate,
+      "Place of birth / region": formData.birthPlace,
+      "Orphanage": formData.orphanage,
+      "Adoptive parents": formData.adoptiveParents,
+      "Contact email": formData.contactEmail,
+      "Additional information": formData.message,
+    });
     setStep(3); // Success state
   };
+
+  const errorMessage = error && (
+    <p role="alert" className="text-sm text-red-600">{error}</p>
+  );
 
   return (
     <div className="h-full w-full bg-white text-black overflow-y-auto">
@@ -93,8 +123,9 @@ export default function FindFamilyForm({ onClose }: Props) {
                      onChange={(e) => setFormData({...formData, birthPlace: e.target.value})}
                    />
                 </div>
+                {errorMessage}
                 <button 
-                  onClick={() => setStep(2)}
+                  onClick={handleNext}
                   className="w-full bg-black text-white py-4 md:py-6 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center justify-center gap-3 hover:bg-neutral-800 transition-colors"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
@@ -154,9 +185,10 @@ export default function FindFamilyForm({ onClose }: Props) {
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                   />
                 </div>
+                {errorMessage}
                 <div className="flex gap-4">
                   <button 
-                    onClick={() => setStep(1)}
+                    onClick={() => { setError(""); setStep(1); }}
                     className="flex-1 border border-neutral-200 py-4 md:py-6 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] md:text-xs hover:bg-neutral-50 transition-colors"
                   >
                     Back
@@ -182,10 +214,15 @@ export default function FindFamilyForm({ onClose }: Props) {
             <div className="w-24 h-24 bg-black text-white rounded-full flex items-center justify-center mb-12">
               <Check className="w-12 h-12" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-tighter mb-6">Request Received</h2>
-            <p className="text-lg md:text-xl text-neutral-500 max-w-lg leading-relaxed mb-12">
-              Thank you for trusting us with your journey. Our team in Addis Ababa will review 
-              your information and contact you within 3-5 business days to discuss next steps.
+            <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-tighter mb-6">Almost Done</h2>
+            <p className="text-lg md:text-xl text-neutral-500 max-w-lg leading-relaxed mb-6">
+              Your email app should now be open with your request filled in. Press send, and our 
+              team in Addis Ababa will review your information and contact you within 3-5 business 
+              days to discuss next steps.
+            </p>
+            <p className="text-sm text-neutral-400 max-w-lg leading-relaxed mb-12">
+              If no email window opened, please write to{" "}
+              <a href={`mailto:${CONTACT_EMAIL}`} className="underline">{CONTACT_EMAIL}</a>.
             </p>
             <button 
               onClick={onClose}
