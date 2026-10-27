@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Mail, Users, Heart, MapPin, Globe, Info, MessageSquare } from "lucide-react";
 import MissionPage from "./components/MissionPage";
@@ -67,13 +67,29 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const switchTimeout = useRef<number | null>(null);
+
+  const cancelSwitch = () => {
+    if (switchTimeout.current) {
+      window.clearTimeout(switchTimeout.current);
+      switchTimeout.current = null;
+    }
+  };
+
   const handleMenuEnter = (id: string | null) => {
     if (leaveTimeout) {
       window.clearTimeout(leaveTimeout);
       setLeaveTimeout(null);
     }
-    if (id) {
-      setActiveMenu(id);
+    cancelSwitch();
+    if (id && id !== activeMenu) {
+      if (activeMenu === null) {
+        setActiveMenu(id);
+      } else {
+        // Wait a moment before switching cards, so crossing another word on
+        // the way to the open card doesn't swap it out.
+        switchTimeout.current = window.setTimeout(() => setActiveMenu(id), 150);
+      }
     }
     setIsMenuHovered(true);
   };
@@ -181,13 +197,14 @@ export default function App() {
                 key={item.id}
                 className="relative group"
                 onMouseEnter={() => handleMenuEnter(item.id)}
+                onMouseLeave={cancelSwitch}
               >
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => setCurrentPage(item.id)}
-                  className={`text-3xl sm:text-4xl md:text-6xl lg:text-7xl short:text-2xl font-bold uppercase tracking-tighter transition-all duration-500 ${
+                  className={`text-3xl sm:text-4xl md:text-6xl min-[1800px]:text-7xl short:text-2xl font-bold uppercase tracking-tighter transition-all duration-500 ${
                     activeMenu === item.id 
                       ? "text-white scale-105" 
                       : isMenuHovered 
@@ -203,22 +220,15 @@ export default function App() {
                       initial={{ opacity: 0, x: 40 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 40 }}
-                      className="hidden lg:block fixed top-1/2 right-24 -translate-y-1/2 w-[450px] pointer-events-none z-50"
+                      className="hidden xl:block fixed top-1/2 right-8 min-[1800px]:right-24 -translate-y-1/2 w-[340px] min-[1800px]:w-[450px] pointer-events-none z-50"
                     >
-                      {/* Hover Bridge: Expanded transparent area to ensure mouse transit doesn't break hover */}
                       <div 
-                        className="absolute top-0 -left-[500px] w-[500px] h-full pointer-events-auto"
-                        onMouseEnter={() => handleMenuEnter(item.id)}
-                        onMouseLeave={handleMenuLeave}
-                      />
-                      
-                      <div 
-                        className="bg-black/90 md:bg-white/5 backdrop-blur-2xl md:backdrop-blur-xl border border-white/10 p-6 md:p-12 rounded-2xl shadow-2xl pointer-events-auto relative z-10"
+                        className="bg-black/90 md:bg-white/5 backdrop-blur-2xl md:backdrop-blur-xl border border-white/10 p-8 min-[1800px]:p-12 rounded-2xl shadow-2xl pointer-events-auto relative z-10"
                         onMouseEnter={() => handleMenuEnter(item.id)}
                         onMouseLeave={handleMenuLeave}
                       >
                         <item.icon className="w-6 h-6 md:w-8 md:h-8 mb-4 md:mb-6 text-white/50" />
-                        <h2 className="text-xl md:text-3xl font-bold uppercase tracking-tight mb-3 md:mb-4">
+                        <h2 className="text-2xl min-[1800px]:text-3xl font-bold uppercase tracking-tight mb-3 md:mb-4">
                           {item.title}
                         </h2>
                         <p className="text-xs md:text-base font-light leading-relaxed text-neutral-300 mb-6 md:mb-8">
@@ -255,7 +265,7 @@ export default function App() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="lg:hidden w-full text-center mt-4 px-4 overflow-hidden"
+                      className="xl:hidden w-full text-center mt-4 px-4 overflow-hidden"
                     >
                       <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-400 font-medium">
                         {item.title}
