@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Phones turned sideways: short screens where the home layout needs to tighten up */
+@custom-variant short (@media (max-height: 500px));
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", serif;

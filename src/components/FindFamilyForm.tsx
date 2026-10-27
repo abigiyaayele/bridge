@@ -56,14 +56,15 @@ export default function FindFamilyForm({ onClose }: Props) {
   return (
     <div className="h-full w-full bg-white text-black overflow-y-auto">
       <div className="max-w-4xl mx-auto px-6 md:px-8 py-12 md:py-24">
-        <header className="flex justify-between items-start mb-12 md:mb-24">
+        <header className="flex justify-between items-start gap-4 mb-12 md:mb-24">
           <div>
             <p className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 font-bold mb-4">Form 01 / Search Request</p>
             <h1 className="text-3xl md:text-6xl font-bold uppercase tracking-tighter">Find My Family</h1>
           </div>
           <button 
             onClick={onClose}
-            className="p-4 hover:bg-neutral-100 rounded-full transition-colors"
+            aria-label="Close"
+            className="shrink-0 p-4 hover:bg-neutral-100 rounded-full transition-colors"
           >
             <X className="w-6 h-6" />
           </button>

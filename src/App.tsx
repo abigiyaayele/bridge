@@ -110,7 +110,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black text-white font-sans selection:bg-white selection:text-black">
+    <div className="relative h-dvh w-full overflow-hidden bg-black text-white font-sans selection:bg-white selection:text-black">
       <AnimatePresence>
         {currentPage && (
           <motion.div
@@ -135,7 +135,7 @@ export default function App() {
         >
           <img
             src={carouselImages[currentImageIndex]}
-            alt="Background"
+            alt=""
             className="h-full w-full object-cover"
             referrerPolicy="no-referrer"
           />
@@ -144,12 +144,12 @@ export default function App() {
       </AnimatePresence>
 
       {/* Main UI Overlay */}
-      <div className="relative z-20 h-full w-full flex flex-col justify-between p-6 md:p-16">
+      <div className="relative z-20 h-full w-full flex flex-col justify-between p-6 md:p-16 short:p-4">
         
         {/* Header / Brand */}
-        <header className="flex flex-col md:flex-row justify-between items-start gap-6">
+        <header className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-6">
           <div className="flex flex-col">
-            <h1 className="text-2xl md:text-4xl font-bold uppercase tracking-[0.4em] leading-none mb-2">
+            <h1 className="text-2xl md:text-4xl font-bold uppercase tracking-[0.4em] leading-none mb-2 whitespace-nowrap">
               The Bridge
             </h1>
             <p className="text-[8px] md:text-[10px] uppercase tracking-[0.6em] text-neutral-400 font-medium">
@@ -157,12 +157,12 @@ export default function App() {
             </p>
           </div>
           
-          <div className="hidden sm:flex gap-8 md:gap-12">
-            <div className="text-right">
+          <div className="hidden sm:flex short:hidden gap-8 md:gap-12 whitespace-nowrap">
+            <div className="lg:text-right">
               <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">Location</p>
               <p className="text-[11px] font-bold uppercase tracking-wider">Addis Ababa, Ethiopia</p>
             </div>
-            <div className="text-right">
+            <div className="lg:text-right">
               <p className="text-[9px] uppercase tracking-widest text-neutral-500 mb-1">Contact</p>
               <a href={`mailto:${CONTACT_EMAIL}`} className="text-[11px] font-bold uppercase tracking-wider hover:underline">{CONTACT_EMAIL}</a>
             </div>
@@ -172,7 +172,7 @@ export default function App() {
         {/* Central Menu System */}
         <main className="flex flex-col items-center justify-center flex-grow">
           <nav 
-            className="flex flex-col items-center gap-4 md:gap-6"
+            className="flex flex-col items-center gap-4 md:gap-6 short:gap-1"
             onMouseEnter={() => handleMenuEnter(null)}
             onMouseLeave={handleMenuLeave}
           >
@@ -187,7 +187,7 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => setCurrentPage(item.id)}
-                  className={`text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter transition-all duration-500 ${
+                  className={`text-3xl sm:text-4xl md:text-6xl lg:text-7xl short:text-2xl font-bold uppercase tracking-tighter transition-all duration-500 ${
                     activeMenu === item.id 
                       ? "text-white scale-105" 
                       : isMenuHovered 
@@ -269,8 +269,8 @@ export default function App() {
         </main>
 
         {/* Footer Navigation */}
-        <footer className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8">
-          <div className="flex flex-col items-center md:items-start gap-4">
+        <footer className="flex flex-col md:flex-row short:flex-row justify-between items-center md:items-end short:items-end gap-8 short:gap-4">
+          <div className="flex flex-col items-center md:items-start short:items-start gap-4">
             <div className="flex gap-4">
               {carouselImages.map((_, i) => (
                 <div 
@@ -309,7 +309,7 @@ export default function App() {
       />
 
       {/* Made with Badge */}
-      <div className="absolute top-1/2 left-8 -translate-y-1/2 z-50 [writing-mode:vertical-lr] rotate-180 opacity-30 hover:opacity-100 transition-opacity cursor-default">
+      <div className="hidden lg:block absolute top-1/2 left-8 -translate-y-1/2 z-50 [writing-mode:vertical-lr] rotate-180 opacity-30 hover:opacity-100 transition-opacity cursor-default">
         <p className="text-[9px] uppercase tracking-[0.5em] font-bold">
           The Bridge • Rebuilding Families • Ethiopia
         </p>
